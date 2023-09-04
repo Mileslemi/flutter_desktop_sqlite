@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-const String tableName = 'notes';
+const String notesTableName = 'notes';
 
 class NoteFields {
   // our notes table column names
@@ -17,7 +17,7 @@ class Note {
   final int? id;
   final String title;
   final String description;
-  final String createdAt;
+  final DateTime createdAt;
   final bool isImportant;
   Note({
     this.id,
@@ -31,7 +31,7 @@ class Note {
     int? id,
     String? title,
     String? description,
-    String? createdAt,
+    DateTime? createdAt,
     bool? isImportant,
   }) {
     return Note(
@@ -44,12 +44,16 @@ class Note {
   }
 
   Map<String, dynamic> toMap() {
+    // since we use this method to change the object to a json like format
+    // that'll be store in table, we need to change certain fields.
+    // e.g. bool. If true we store as 1, else 0
+    // e.g. timeField. We convert it to string object
     return <String, dynamic>{
       'id': id,
       'title': title,
       'description': description,
-      'createdAt': createdAt,
-      'isImportant': isImportant,
+      'createdAt': createdAt.toIso8601String(),
+      'isImportant': isImportant ? 1 : 0,
     };
   }
 
@@ -58,8 +62,8 @@ class Note {
       id: map['id'] != null ? map['id'] as int : null,
       title: (map['title'] ?? '') as String,
       description: (map['description'] ?? '') as String,
-      createdAt: (map['createdAt'] ?? '') as String,
-      isImportant: (map['isImportant'] ?? false) as bool,
+      createdAt: DateTime.parse((map['createdAt'] ?? '') as String),
+      isImportant: map['isImportant'] == 1,
     );
   }
 

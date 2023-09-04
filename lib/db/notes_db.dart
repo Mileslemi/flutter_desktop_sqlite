@@ -12,6 +12,8 @@ class NotesDatabase {
 
   Future<Database> get database async {
     // open a connection
+
+    // this will run when you call instance.database
     if (_database != null) {
       //if already created
       return _database!;
@@ -48,7 +50,7 @@ class NotesDatabase {
     // we'll store createdAt in a textformat utilizing Dateformat.parse
 
     await db.execute('''
-CREATE TABLE $tableName(
+CREATE TABLE $notesTableName(
   ${NoteFields.id} $idType,
   ${NoteFields.title} $textType,
   ${NoteFields.description} $textType,
@@ -58,6 +60,21 @@ CREATE TABLE $tableName(
 ''');
 
 // you can create diff tables here
+  }
+
+  Future<Note> create(Note note) async {
+    // initialize db
+    final db = await instance.database;
+
+    final id = await db.insert(notesTableName, note.toMap());
+    // returns the id of the inserted row
+    // you can also use raw sql
+    // final noteMap = note.toMap()
+    // final $columns = '${NoteFields.title},${NoteFields.desc}';
+    // final values = "${noteMap[NoteFields.title]},${noteMap[NoteFields.desc]}";
+    // int id1 = await database.rawInsert(
+    // 'INSERT INTO table_name($columns) VALUES($values)');
+    return note.copyWith(id: id);
   }
 
   Future close() async {
