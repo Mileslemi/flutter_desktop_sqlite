@@ -1,0 +1,6 @@
+The db should have 
+  - a unique id
+  - time of entry
+  - title of entry
+  - desc of entry
+  - who made the entry
