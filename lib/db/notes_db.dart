@@ -15,6 +15,7 @@ class NotesDatabase {
       //if already created
       return _database!;
     }
+    // else
     _database = await _initDB('notes.db');
 
     return _database!;
