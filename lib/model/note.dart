@@ -3,6 +3,14 @@ import 'dart:convert';
 const String notesTableName = 'notes';
 
 class NoteFields {
+  // columns to retrieve when reading db table
+  static const List<String> retrieveValues = [
+    id,
+    title,
+    description,
+    createdAt,
+    isImportant
+  ];
   // our notes table column names
   static const String id = '_id';
   // an underscore before id

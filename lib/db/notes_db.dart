@@ -67,7 +67,7 @@ CREATE TABLE $notesTableName(
     final db = await instance.database;
 
     final id = await db.insert(notesTableName, note.toMap());
-    // returns the id of the inserted row
+    // returns the id of the inserted row. Which is auto_genrated or specified.
     // you can also use raw sql
     // final noteMap = note.toMap()
     // final $columns = '${NoteFields.title},${NoteFields.desc}';
@@ -75,6 +75,37 @@ CREATE TABLE $notesTableName(
     // int id1 = await database.rawInsert(
     // 'INSERT INTO table_name($columns) VALUES($values)');
     return note.copyWith(id: id);
+  }
+
+  Future<Note> readNote(int id) async {
+    // initialize db
+    final db = await instance.database;
+
+    final List maps = await db.query(notesTableName,
+        columns: NoteFields.retrieveValues,
+        where: "${NoteFields.id} = ?",
+        whereArgs: [id]);
+
+    // using whereArgs prevents sql injection attack, more secure.
+    // also you can add
+    // where: "${NoteFields.id} = ?, ${Notefield.title} = ?",
+    // whereArgs: [id, title]
+    // there are also other parameters you can add, orderBy, distinct e.t.c
+    if (maps.isNotEmpty) {
+      return Note.fromJson(maps.first);
+    }
+    throw Exception("ID $id not found");
+  }
+
+  Future<List<Note>> readAllNotes() async {
+    // initialize db
+    final db = await instance.database;
+
+    const orderBy = "${NoteFields.createdAt} ASC";
+
+    final List notes = await db.query(notesTableName, orderBy: orderBy);
+
+    return notes.map((e) => Note.fromJson(e)).toList();
   }
 
   Future close() async {
