@@ -108,6 +108,29 @@ CREATE TABLE $notesTableName(
     return notes.map((e) => Note.fromJson(e)).toList();
   }
 
+  Future<int> update(Note note) async {
+    final db = await instance.database;
+
+    int id = await db.update(
+      notesTableName,
+      note.toMap(),
+      where: "${NoteFields.id} = ?",
+      whereArgs: [note.id],
+    );
+
+    return id;
+  }
+
+  Future<int> delete(int id) async {
+    final db = await instance.database;
+
+    return await db.delete(
+      notesTableName,
+      where: "${NoteFields.id} = ?",
+      whereArgs: [id],
+    );
+  }
+
   Future close() async {
     final db = await instance.database;
     await db.close();
