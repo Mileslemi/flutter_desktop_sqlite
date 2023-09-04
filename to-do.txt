@@ -4,3 +4,7 @@ The db should have
   - title of entry
   - desc of entry
   - who made the entry
+
+After finishing, 
+we'll create a backend api that will receive a db file
+and sync, and send the updated db to app.
