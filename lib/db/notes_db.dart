@@ -29,6 +29,8 @@ class NotesDatabase {
     // you can also use path provider to specify a directory
 
     final path = p.join(dbPath, filepath);
+    // - on android - /data/user/0/com.example.flutter_desktop_sqlite/databases/notes.db
+    // on windows - .dart_tool/sqflite_common_ffi/databases/notes.db
 
     return await openDatabase(
       path,
