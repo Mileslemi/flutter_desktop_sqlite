@@ -10,3 +10,5 @@ we'll create a backend api that will receive a db file
 and sync, and send the updated db to app.
 
 Maybe we can loop through the added rows from local db, and add their data to main db
+
+*you can make a widget build loop if you put a function that has setState inside the build

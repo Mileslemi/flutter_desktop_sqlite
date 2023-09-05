@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_desktop_sqlite/add_note.dart';
@@ -77,7 +78,27 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: [
+          TextButton(
+              onPressed: () {
+                // for autamatic refresh, you'd have to employ Bloc State mngt or getX
+                fetchNotes();
+              },
+              child: Row(
+                children: const [
+                  Icon(
+                    Icons.refresh,
+                    color: Colors.white,
+                  ),
+                  Text(
+                    "Refresh",
+                    style: TextStyle(color: Colors.white),
+                  )
+                ],
+              ))
+        ],
       ),
+
       body: allNotes.isEmpty
           ? const Center(
               child: Text("No notes..."),
@@ -132,9 +153,24 @@ Widget buildNotes(List<Note> notes) => GridView.custom(
 
 Widget noteTile(Note note) => Card(
       elevation: 1,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [Text(note.title ?? ''), Text(note.description ?? '')],
+      color: Colors.primaries[Random().nextInt(Colors.primaries.length)],
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Text(
+              note.title ?? '',
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
+            Text(
+              note.description ?? '',
+              overflow: TextOverflow.ellipsis,
+              maxLines: 3,
+            ),
+          ],
+        ),
       ),
     );
