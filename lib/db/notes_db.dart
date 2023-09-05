@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter_desktop_sqlite/model/note.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:sqflite_common/sqflite.dart';
 import 'package:path/path.dart' as p;
 
 class NotesDatabase {
@@ -92,7 +92,7 @@ CREATE TABLE $notesTableName(
     // whereArgs: [id, title]
     // there are also other parameters you can add, orderBy, distinct e.t.c
     if (maps.isNotEmpty) {
-      return Note.fromJson(maps.first);
+      return Note.fromMap(maps.first);
     }
     throw Exception("ID $id not found");
   }
@@ -105,7 +105,7 @@ CREATE TABLE $notesTableName(
 
     final List notes = await db.query(notesTableName, orderBy: orderBy);
 
-    return notes.map((e) => Note.fromJson(e)).toList();
+    return notes.map((e) => Note.fromMap(e)).toList();
   }
 
   Future<int> update(Note note) async {

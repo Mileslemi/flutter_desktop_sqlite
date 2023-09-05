@@ -57,7 +57,7 @@ class Note {
     // e.g. bool. If true we store as 1, else 0
     // e.g. timeField. We convert it to string object
     return <String, dynamic>{
-      'id': id,
+      '_id': id,
       'title': title,
       'description': description,
       'createdAt': createdAt.toIso8601String(),
@@ -67,7 +67,7 @@ class Note {
 
   factory Note.fromMap(Map<String, dynamic> map) {
     return Note(
-      id: map['id'] != null ? map['id'] as int : null,
+      id: map['_id'] != null ? map['_id'] as int : null,
       title: (map['title'] ?? '') as String,
       description: (map['description'] ?? '') as String,
       createdAt: DateTime.parse((map['createdAt'] ?? '') as String),

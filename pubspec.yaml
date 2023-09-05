@@ -37,7 +37,10 @@ dependencies:
   cupertino_icons: ^1.0.2
   path: any
   intl: ^0.18.1 #mostly date objects
+  sqflite: ^2.2.0
+  sqflite_common: ^2.3.0
   sqflite_common_ffi: ^2.2.5 #like sqflite but conversant with all platforms
+  flutter_staggered_grid_view: ^0.7.0
 
 dev_dependencies:
   flutter_test:
