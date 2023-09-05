@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_desktop_sqlite/add_note.dart';
 import 'package:flutter_desktop_sqlite/db/notes_db.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Desktop SQLite Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -82,14 +84,12 @@ class _MyHomePageState extends State<MyHomePage> {
             )
           : buildNotes(allNotes),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await NotesDatabase.instance.create(Note(
-              title: "Note 1",
-              description: "This is note description",
-              createdAt: DateTime.now(),
-              isImportant: true));
-
-          fetchNotes();
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const AddorEditNote(),
+              ));
         },
         child: const Icon(Icons.add),
       ),
@@ -115,12 +115,26 @@ Widget buildNotes(List<Note> notes) => GridView.custom(
         childCount: notes.length,
         (context, index) {
           final Note note = notes[index];
-          return noteTile(note);
+          return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddorEditNote(
+                        note: note,
+                      ),
+                    ));
+              },
+              child: noteTile(note));
         },
       ),
     );
 
 Widget noteTile(Note note) => Card(
       elevation: 1,
-      child: Text(note.title),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [Text(note.title ?? ''), Text(note.description ?? '')],
+      ),
     );

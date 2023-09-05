@@ -23,16 +23,16 @@ class NoteFields {
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class Note {
   final int? id;
-  final String title;
-  final String description;
-  final DateTime createdAt;
-  final bool isImportant;
-  Note({
+  final String? title;
+  final String? description;
+  final DateTime? createdAt;
+  final bool? isImportant;
+  const Note({
     this.id,
-    required this.title,
-    required this.description,
-    required this.createdAt,
-    required this.isImportant,
+    this.title,
+    this.description,
+    this.createdAt,
+    this.isImportant,
   });
 
   Note copyWith({
@@ -60,8 +60,8 @@ class Note {
       '_id': id,
       'title': title,
       'description': description,
-      'createdAt': createdAt.toIso8601String(),
-      'isImportant': isImportant ? 1 : 0,
+      'createdAt': createdAt?.toIso8601String(),
+      'isImportant': (isImportant ?? false) ? 1 : 0,
     };
   }
 
